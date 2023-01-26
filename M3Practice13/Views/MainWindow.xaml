@@ -4,9 +4,20 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:M3Practice13"
+        xmlns:vm="clr-namespace:M3Practice13.ViewModels"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
+        Title="MainWindow" Height="550" Width="1000"
+        WindowStartupLocation="CenterScreen">
+    <Window.DataContext>
+        <vm:MainWindowViewModel />
+    </Window.DataContext>
+    <DockPanel>
+         <Menu DockPanel.Dock="Top">
+            <MenuItem Header="Файл" VerticalAlignment="Center" Margin="5,5,0,0">
+                <MenuItem Header="Сменить режим работы"/>
+            </MenuItem>
+        </Menu>
+        <UserControl Content="{Binding CurentView}" Margin="5"/>
 
-    </Grid>
+    </DockPanel>
 </Window>
