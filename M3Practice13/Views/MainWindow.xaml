@@ -14,7 +14,8 @@
     <DockPanel>
          <Menu DockPanel.Dock="Top">
             <MenuItem Header="Файл" VerticalAlignment="Center" Margin="5,5,0,0">
-                <MenuItem Header="Сменить режим работы"/>
+                <MenuItem Header="Сменить режим работы"
+                          Command="{Binding ChangeRoleCommand}"/>
             </MenuItem>
         </Menu>
         <UserControl Content="{Binding CurentView}" Margin="5"/>
