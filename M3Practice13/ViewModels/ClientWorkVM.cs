@@ -12,10 +12,12 @@ namespace M3Practice13.ViewModels
     {
         public Worker RoleType { get; }
 
+        
+
         public ClientWorkVM(Worker roleType)
         {
             RoleType = roleType;
-            RoleType.Clients = M3Practice13.Data.GetData();
+            RoleType.Clients = Data.GetData();
         }
     }
 }

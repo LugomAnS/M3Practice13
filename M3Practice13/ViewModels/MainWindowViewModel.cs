@@ -14,15 +14,43 @@ namespace M3Practice13.ViewModels
 {
     internal class MainWindowViewModel : BaseViewModel
     {
-        UserControl curentView;
 
-        private Worker CurrentRoleType { get; set; }
+        #region Текущий View
+        UserControl currentView;
 
         public UserControl CurentView
         {
-            get => curentView;
-            set => Set(ref curentView, value);
+            get => currentView;
+            set => Set(ref currentView, value);
         }
+        #endregion
+
+        #region Рабочая роль
+        private Worker currentRoleType;
+        private Worker CurrentRoleType
+        {
+            get => currentRoleType;
+            set
+            {
+                Set(ref currentRoleType, value);
+                OnPropertyChanged(nameof(WindowTitle));
+            }
+        }
+        #endregion
+
+        #region Заголовок окна
+        public string WindowTitle
+        {
+            get
+            {
+                if (CurrentRoleType is Consultant) return "Режим работы Консультант";
+
+                if (CurrentRoleType is Manager) return "Режим работы Менеджер";
+
+                return "Undefined";
+            }
+        }
+        #endregion
 
         public MainWindowViewModel()
         {
@@ -32,6 +60,10 @@ namespace M3Practice13.ViewModels
             CurentView = new RoleChoosingView();  
         }
 
+        /// <summary>
+        /// Назначение новой роли работы
+        /// </summary>
+        /// <param name="worker"></param>
         private void RoleAppointment(Worker worker)
         {
             CurrentRoleType = worker;

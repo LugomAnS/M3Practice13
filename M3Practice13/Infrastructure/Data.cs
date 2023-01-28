@@ -41,7 +41,7 @@ namespace M3Practice13
                 
                 foreach (ClientInfo item in test_data)
                 {
-                    item.ClientAccounts.Add(new SavingAccount
+                    item.ClientAccounts.Add(new Account
                     {
                         CLientID = item.Client.Id,
                         Number = $"{item.Client.Id}{item.Client.Id}{item.Client.Id}",

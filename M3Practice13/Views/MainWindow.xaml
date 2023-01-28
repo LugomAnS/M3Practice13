@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:M3Practice13"
         xmlns:vm="clr-namespace:M3Practice13.ViewModels"
         mc:Ignorable="d"
-        Title="MainWindow" Height="550" Width="1000"
+        Title="{Binding WindowTitle}" Height="550" Width="1000"
         WindowStartupLocation="CenterScreen">
     <Window.DataContext>
         <vm:MainWindowViewModel />
