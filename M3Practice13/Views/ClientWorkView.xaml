@@ -5,7 +5,8 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:M3Practice13.Views"
              xmlns:vm="clr-namespace:M3Practice13.ViewModels"
-             mc:Ignorable="d" 
+             mc:Ignorable="d"
+             d:DataContext="{d:DesignInstance vm:ClientWorkVM}"
              d:DesignHeight="450" d:DesignWidth="800">
     <UserControl.Resources>
         <DataTemplate x:Key="Client_short">
@@ -30,17 +31,22 @@
             <ColumnDefinition Width="0.3*"/>
             <ColumnDefinition />
         </Grid.ColumnDefinitions>
-        <GroupBox Grid.Column="0" Header="Список клиентов" DataContext="{Binding RoleType}">
+        <GroupBox Grid.Column="0" Header="Список клиентов">
             <DockPanel>
                 <StackPanel Orientation="Vertical" DockPanel.Dock="Bottom">
-                    <Button Content="Добавить клиента"/>
-                    <Button Content="Удалить клиента"/>
+                    <Button Content="Добавить клиента"
+                            Command="{Binding AddNewClientCommand}"/>
+                    <Button Content="Удалить клиента"
+                            Command="{Binding DeleteClientCommand}"
+                            CommandParameter="{Binding SelectedClient}"/>
                 </StackPanel>
-                <ListBox ItemsSource="{Binding ClientsInfo}" ScrollViewer.VerticalScrollBarVisibility="auto" 
-                         ScrollViewer.CanContentScroll="True"
-                         ItemTemplate="{StaticResource Client_short}"></ListBox>
+                <ListBox ItemsSource="{Binding RoleType.ClientsInfo}" ScrollViewer.VerticalScrollBarVisibility="auto" 
+                         ScrollViewer.CanContentScroll="True" ItemTemplate="{StaticResource Client_short}"
+                         SelectedItem="{Binding SelectedClient}"></ListBox>
             </DockPanel>
         </GroupBox>
-            
+
+        <UserControl Grid.Column="1" Content="{Binding WorkingMode}" />
+
     </Grid>
 </UserControl>
