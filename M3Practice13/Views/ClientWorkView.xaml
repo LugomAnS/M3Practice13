@@ -34,6 +34,7 @@
         <GroupBox Grid.Column="0" Header="Список клиентов">
             <DockPanel>
                 <StackPanel Orientation="Vertical" DockPanel.Dock="Bottom">
+                    <Button Content="Работа с клиентом"/>
                     <Button Content="Добавить клиента"
                             Command="{Binding AddNewClientCommand}"/>
                     <Button Content="Удалить клиента"

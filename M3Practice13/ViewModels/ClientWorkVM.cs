@@ -1,5 +1,7 @@
-﻿using M3Practice13.Models;
+﻿using M3Practice13.Controler;
+using M3Practice13.Models;
 using M3Practice13.ViewModels.Base;
+using M3Practice13.Views;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,7 +16,12 @@ namespace M3Practice13.ViewModels
     {
         public Worker RoleType { get; }
 
-        public UserControl WorkingMode { get; set; }
+        private UserControl? workingMode;
+        public UserControl? WorkingMode 
+        { 
+            get => workingMode;
+            set => Set(ref workingMode, value);
+        }
 
         #region Выбранный клиент
         private ClientInfo selectedClient;
@@ -32,10 +39,32 @@ namespace M3Practice13.ViewModels
             RoleType = roleType;
             RoleType.ClientsInfo = Data.GetData();
 
+            Service.ChangeWorkingMode += SetWorkingMode;
+            Service.NewClientToAdd += AddNewClientInfo;
+
             AddNewClientCommand = new Command(OnAddNewClientCommandExecute,
                                               CanAddNewClientCommandExecute);
             DeleteClientCommand = new Command(OnDeleteClientCommandExecute,
                                               CanDeleteClientCommandExecute);
+        }
+
+        /// <summary>
+        /// Установка View для режима работы
+        /// </summary>
+        /// <param name="userControl">View для установки</param>
+        private void SetWorkingMode(UserControl? userControl)
+        {
+            WorkingMode = userControl;
+        }
+
+        /// <summary>
+        /// Сохранение новых сведений о клиенте в БД
+        /// </summary>
+        /// <param name="clientInfo">Информация о клиенте</param>
+        private void AddNewClientInfo(ClientInfo clientInfo)
+        {
+            RoleType.ClientsInfo.Add(clientInfo);
+            Data.WriteData(RoleType.ClientsInfo);
         }
 
         #region Команды
@@ -45,7 +74,7 @@ namespace M3Practice13.ViewModels
 
         private void OnAddNewClientCommandExecute(object p)
         {
-
+            Service.ChangeWorkMode("AddClient");
         }
 
         private bool CanAddNewClientCommandExecute(object p)
@@ -57,7 +86,8 @@ namespace M3Practice13.ViewModels
 
         private void OnDeleteClientCommandExecute(object p)
         {
-
+            RoleType.ClientsInfo.Remove(SelectedClient);
+            Data.WriteData(RoleType.ClientsInfo);
         }
 
         private bool CanDeleteClientCommandExecute(object p)
