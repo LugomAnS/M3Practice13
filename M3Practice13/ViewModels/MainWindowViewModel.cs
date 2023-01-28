@@ -36,7 +36,8 @@ namespace M3Practice13.ViewModels
         {
             CurrentRoleType = worker;
 
-            CurentView = null;
+            CurentView = new ClientWorkView(worker);
+            
         }
 
         #region Команды
