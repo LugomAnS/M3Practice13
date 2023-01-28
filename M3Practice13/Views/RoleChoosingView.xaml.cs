@@ -16,11 +16,11 @@ using System.Windows.Shapes;
 namespace M3Practice13.Views
 {
     /// <summary>
-    /// Логика взаимодействия для RoleChoosingViewModel.xaml
+    /// Логика взаимодействия для RoleChoosingView.xaml
     /// </summary>
-    public partial class RoleChoosingViewModel : UserControl
+    public partial class RoleChoosingView : UserControl
     {
-        public RoleChoosingViewModel()
+        public RoleChoosingView()
         {
             InitializeComponent();
         }

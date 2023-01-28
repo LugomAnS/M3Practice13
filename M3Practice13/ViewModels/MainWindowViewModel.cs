@@ -29,7 +29,7 @@ namespace M3Practice13.ViewModels
             ChangeRoleCommand = new Command(OnChangeRoleExecute);
 
             Service.ChangeRole += RoleAppointment;
-            CurentView = new RoleChoosingViewModel();  
+            CurentView = new RoleChoosingView();  
         }
 
         private void RoleAppointment(Worker worker)
@@ -44,7 +44,7 @@ namespace M3Practice13.ViewModels
         #region Смена роли
         public ICommand ChangeRoleCommand { get; }
 
-        private void OnChangeRoleExecute(object p) => CurentView = new RoleChoosingViewModel();
+        private void OnChangeRoleExecute(object p) => CurentView = new RoleChoosingView();
         #endregion
 
         #endregion
