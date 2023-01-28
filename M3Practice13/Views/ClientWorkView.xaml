@@ -34,14 +34,16 @@
         <GroupBox Grid.Column="0" Header="Список клиентов">
             <DockPanel>
                 <StackPanel Orientation="Vertical" DockPanel.Dock="Bottom">
-                    <Button Content="Работа с клиентом"/>
+                    <Button Content="Работа с клиентом"
+                            Command="{Binding ClientInfoCommand}"
+                            CommandParameter="{Binding SelectedClient}"/>
                     <Button Content="Добавить клиента"
                             Command="{Binding AddNewClientCommand}"/>
                     <Button Content="Удалить клиента"
                             Command="{Binding DeleteClientCommand}"
                             CommandParameter="{Binding SelectedClient}"/>
                 </StackPanel>
-                <ListBox ItemsSource="{Binding RoleType.ClientsInfo}" ScrollViewer.VerticalScrollBarVisibility="auto" 
+                <ListBox ItemsSource="{Binding Clients}" ScrollViewer.VerticalScrollBarVisibility="auto" 
                          ScrollViewer.CanContentScroll="True" ItemTemplate="{StaticResource Client_short}"
                          SelectedItem="{Binding SelectedClient}"></ListBox>
             </DockPanel>

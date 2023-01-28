@@ -8,5 +8,9 @@ namespace M3Practice13.Models
 {
     public class Manager : Worker
     {
+        public override string ClientPassport
+        {
+            get => SelectedClientInfo.Client.Passport;
+        }
     }
 }

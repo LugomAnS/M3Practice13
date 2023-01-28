@@ -4,6 +4,7 @@ using M3Practice13.ViewModels.Base;
 using M3Practice13.Views;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -14,14 +15,16 @@ namespace M3Practice13.ViewModels
 {
     class ClientWorkVM : BaseViewModel
     {
-        public Worker RoleType { get; }
+        public Worker Worker { get; set; }
 
+        #region Режим работы
         private UserControl? workingMode;
         public UserControl? WorkingMode 
         { 
             get => workingMode;
             set => Set(ref workingMode, value);
         }
+        #endregion
 
         #region Выбранный клиент
         private ClientInfo selectedClient;
@@ -29,23 +32,39 @@ namespace M3Practice13.ViewModels
         public ClientInfo SelectedClient
         {
             get => selectedClient;
-            set => Set(ref selectedClient, value);
+            set
+            {
+                Set(ref selectedClient, value);
+                Worker.SelectedClientInfo = value;
+            }
         }
         #endregion
 
+        #region Список клиентов
+        private ObservableCollection<ClientInfo> clients;
+
+        public ObservableCollection<ClientInfo> Clients
+        {
+            get => clients;
+            set => Set(ref clients, value);
+        }
+        #endregion
 
         public ClientWorkVM(Worker roleType)
         {
-            RoleType = roleType;
-            RoleType.ClientsInfo = Data.GetData();
+            Worker = roleType;
+            Clients = Data.GetData();
 
             Service.ChangeWorkingMode += SetWorkingMode;
             Service.NewClientToAdd += AddNewClientInfo;
+            Service.CurrentClient += SelectedClientInfo;
 
             AddNewClientCommand = new Command(OnAddNewClientCommandExecute,
                                               CanAddNewClientCommandExecute);
             DeleteClientCommand = new Command(OnDeleteClientCommandExecute,
                                               CanDeleteClientCommandExecute);
+            ClientInfoCommand = new Command(OnClientInfoCommandExecute,
+                                            CanClientInfoCommandExecute);
         }
 
         /// <summary>
@@ -63,8 +82,13 @@ namespace M3Practice13.ViewModels
         /// <param name="clientInfo">Информация о клиенте</param>
         private void AddNewClientInfo(ClientInfo clientInfo)
         {
-            RoleType.ClientsInfo.Add(clientInfo);
-            Data.WriteData(RoleType.ClientsInfo);
+            Clients.Add(clientInfo);
+            Data.WriteData(Clients);
+        }
+
+        private void SelectedClientInfo(ClientInfo clientInfo)
+        {
+            Worker.SelectedClientInfo = clientInfo;
         }
 
         #region Команды
@@ -78,7 +102,7 @@ namespace M3Practice13.ViewModels
         }
 
         private bool CanAddNewClientCommandExecute(object p)
-            => RoleType is Manager;
+            => Worker is Manager;
         #endregion
 
         #region Удалить клиента
@@ -86,16 +110,28 @@ namespace M3Practice13.ViewModels
 
         private void OnDeleteClientCommandExecute(object p)
         {
-            RoleType.ClientsInfo.Remove(SelectedClient);
-            Data.WriteData(RoleType.ClientsInfo);
+            Clients.Remove(Worker.SelectedClientInfo);
+            Data.WriteData(Clients);
         }
 
         private bool CanDeleteClientCommandExecute(object p)
         {
-            if (p != null && RoleType is Manager) return true;
+            if (p != null && Worker is Manager) return true;
 
             return false;
         }
+
+        #endregion
+
+        #region Работа с клиентом
+        public ICommand ClientInfoCommand { get; }
+
+        private void OnClientInfoCommandExecute(object p)
+        {
+            Service.ChangeWorkMode("ClientInfo", Worker);
+        }
+
+        private bool CanClientInfoCommandExecute(object p) => p != null;
 
         #endregion
 

@@ -17,16 +17,20 @@ namespace M3Practice13.Controler
         public static event Action<Worker> ChangeRole;
         public static event Action<UserControl?> ChangeWorkingMode;
         public static event Action<ClientInfo> NewClientToAdd;
+        public static event Action<ClientInfo> CurrentClient;
        
 
         public static void NewUserRole(Worker worker) => ChangeRole?.Invoke(worker);
 
-        public static void ChangeWorkMode(string request=null)
+        public static void ChangeWorkMode(string request=null, Worker worker=null)
         {
             switch (request)
             {
                 case "AddClient":
                     ChangeWorkingMode?.Invoke(new AddNewClientView());
+                    break;
+                case "ClientInfo":
+                    ChangeWorkingMode?.Invoke(new ClientOperationsView(worker));
                     break;
                 default:
                     ChangeWorkingMode?.Invoke(null);
@@ -41,6 +45,11 @@ namespace M3Practice13.Controler
             ClientInfo newClientInfo = new ClientInfo();
             newClientInfo.Client = client;
             NewClientToAdd?.Invoke(newClientInfo);
+        }
+
+        public static void SelectedClientChange(ClientInfo clientInfo)
+        {
+            CurrentClient?.Invoke(clientInfo);
         }
     }
 }

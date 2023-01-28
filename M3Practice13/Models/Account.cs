@@ -12,7 +12,7 @@ namespace M3Practice13.Models
         public string Number { get; set; }
         public double Balance { get; set; }
         public DateTime CreationDate { get; set; }
-        public DateTime ClosingTime { get; set; }
+        public DateTime? ClosingTime { get; set; }
 
     }
 }
