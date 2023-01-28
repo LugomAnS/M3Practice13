@@ -31,7 +31,7 @@ namespace M3Practice13
                              Id = client_index,
                              Name = $"Name {client_index}",
                              Surname = $"Surname {client_index}",
-                             Patronymic = $"Patronymic {client_index}",
+                             Patronymic = $"Patronymic {client_index++}",
                              Passport = $"1111 111111"
                          },
                          ClientAccounts = new ObservableCollection<Account>()

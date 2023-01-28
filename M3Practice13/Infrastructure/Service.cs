@@ -9,6 +9,9 @@ namespace M3Practice13.Controler
 {
     public static class Service
     {
+        /// <summary>
+        /// Возвращает значение новой рабочей роли сотрудника
+        /// </summary>
         public static event Action<Worker> ChangeRole;
 
         public static void NewUserRole(Worker worker) => ChangeRole?.Invoke(worker);

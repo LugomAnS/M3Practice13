@@ -9,6 +9,6 @@ namespace M3Practice13.Models
 {
     public abstract class Worker
     {
-        public ObservableCollection<ClientInfo> Clients { get; set; } = new ObservableCollection<ClientInfo>();
+        public ObservableCollection<ClientInfo> ClientsInfo { get; set; } = new ObservableCollection<ClientInfo>();
     }
 }
