@@ -15,6 +15,7 @@ namespace M3Practice13.ViewModels
         public ClientWorkVM(Worker roleType)
         {
             RoleType = roleType;
+            RoleType.Clients = M3Practice13.Data.GetData();
         }
     }
 }

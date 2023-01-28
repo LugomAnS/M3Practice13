@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace M3Practice13.Models
 {
-    internal abstract class Account 
+    public class Account 
     {
         public int CLientID { get; set; }
         public string Number { get; set; }
