@@ -34,8 +34,11 @@ namespace M3Practice13.ViewModels
             get => selectedClient;
             set
             {
-                Set(ref selectedClient, value);
-                Worker.SelectedClientInfo = value;
+                if (value != null)
+                {
+                    Set(ref selectedClient, value);
+                    Worker.SelectedClientInfo = value;
+                }
             }
         }
         #endregion
@@ -158,6 +161,7 @@ namespace M3Practice13.ViewModels
 
         private void OnDeleteClientCommandExecute(object p)
         {
+            Service.ChangeWorkMode(null);
             Clients.Remove(Worker.SelectedClientInfo);
             Data.WriteData(Clients);
         }

@@ -15,7 +15,7 @@ namespace M3Practice13.Models
 
         public ObservableCollection<Account> ClientAccounts { get; set; } = new ObservableCollection<Account>();
 
-        private ObservableCollection<MessageLog> journal;
+        private ObservableCollection<MessageLog> journal = new ObservableCollection<MessageLog>();
 
         public ObservableCollection<MessageLog> Journal 
         {
@@ -47,9 +47,13 @@ namespace M3Practice13.Models
 
         public void NewMessagesRefresh()
         {
-            int count = (from m in Journal
-                         where m.IsReaded == false
-                         select m).Count();
+            int count = 0;
+            if (journal != null && journal.Count > 0)
+            {
+                count = (from m in Journal
+                             where m.IsReaded == false
+                             select m).Count();
+            }
             if (count > 0)
             {
                 UnreadedMessages = count;
