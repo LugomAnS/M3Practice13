@@ -58,7 +58,9 @@ namespace M3Practice13.ViewModels
             Service.ChangeWorkingMode += SetWorkingMode;
             Service.NewClientToAdd += AddNewClientInfo;
             Service.OpenAccount += AddNewAccount;
-            Service.CloseAccount += CloseAccount;
+            Service.CloseAccount += MessageRecieve;
+            Service.AccountFill += MessageRecieve;
+            Service.StatusRequest += WorkerStatus;
 
             AddNewClientCommand = new Command(OnAddNewClientCommandExecute,
                                               CanAddNewClientCommandExecute);
@@ -67,6 +69,8 @@ namespace M3Practice13.ViewModels
             ClientInfoCommand = new Command(OnClientInfoCommandExecute,
                                             CanClientInfoCommandExecute);
         }
+
+        public string WorkerStatus() => (Worker.GetType()).Name;
 
         /// <summary>
         /// Установка View для режима работы
@@ -94,7 +98,7 @@ namespace M3Practice13.ViewModels
             Data.WriteData(Clients);
         }
 
-        private void CloseAccount(MessageLog messageLog)
+        private void MessageRecieve(MessageLog messageLog)
         {
             SelectedClient.Journal.Add(messageLog);
             Data.WriteData(Clients);

@@ -3,6 +3,7 @@ using M3Practice13.Views;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls;
@@ -11,13 +12,22 @@ namespace M3Practice13.Controler
 {
     public static class Service
     {
-       
+        public static event Func<string> StatusRequest;
+
+        public static event Action<Account> AccountSelectionChange;
         public static event Action<Worker> ChangeRole;
         public static event Action<UserControl?> ChangeWorkingMode;
         public static event Action<ClientInfo> NewClientToAdd;
         public static event Action<Account, MessageLog> OpenAccount;
         public static event Action<MessageLog> CloseAccount;
+        public static event Action<UserControl?> ChangeBalanceWork;
+        public static event Action<MessageLog> AccountFill;
        
+
+        public static string GetWorkerSatus()
+        {
+            return StatusRequest?.Invoke();
+        }
 
         public static void NewUserRole(Worker worker) => ChangeRole?.Invoke(worker);
 
@@ -37,6 +47,19 @@ namespace M3Practice13.Controler
             }
         }
 
+        public static void ChangeBalanceWorkingMode(string request=null, Account account=null)
+        {
+            switch (request)
+            {
+                case "Fill":
+                    ChangeBalanceWork?.Invoke(new BalanceWorkingView(account));
+                    break;
+                default:
+                    ChangeBalanceWork?.Invoke(null);
+                    break;
+            }
+        }
+
         public static void AddNewClient(Client client)
         {
             client.Id = Data.GetNextID();
@@ -46,7 +69,7 @@ namespace M3Practice13.Controler
             NewClientToAdd?.Invoke(newClientInfo);
         }
 
-        public static void OpenNewAccount(int clientId, string autor)
+        public static void OpenNewAccount(int clientId)
         {
             Random r = new Random();
             Account newAccount = new Account
@@ -62,14 +85,14 @@ namespace M3Practice13.Controler
                 ClientID = clientId,
                 RecordTime = DateTime.Now,
                 IsReaded = false,
-                Operator = autor,
+                Operator = GetWorkerSatus(),
                 Message = $"Открыт счет {newAccount.Number}"
             };
 
             OpenAccount?.Invoke(newAccount, messageLog);
         }
 
-        public static void ClosingAccount(Account account, string autor)
+        public static void ClosingAccount(Account account)
         {
             account.ClosingTime = DateTime.Now;
             MessageLog messageLog = new MessageLog
@@ -77,11 +100,32 @@ namespace M3Practice13.Controler
                 ClientID = account.CLientID,
                 RecordTime = DateTime.Now,
                 IsReaded = false,
-                Operator = autor,
+                Operator = GetWorkerSatus(),
                 Message = $"Произведено закрытие счета {account.Number}"
             };
 
             CloseAccount?.Invoke(messageLog);
+        }
+
+        public static void AccountFilling(Account account, double ammount)
+        {
+            account.Balance += ammount;
+
+            MessageLog messageLog = new MessageLog
+            {
+                ClientID = account.CLientID,
+                RecordTime = DateTime.Now,
+                IsReaded = false,
+                Operator = GetWorkerSatus(),
+                Message = $"Пополнение счета {account.Number} на сумму {ammount}"
+            };
+
+            AccountFill?.Invoke(messageLog);
+        }
+
+        public static void AccountChanged(Account account)
+        {
+            AccountSelectionChange?.Invoke(account);
         }
 
     }

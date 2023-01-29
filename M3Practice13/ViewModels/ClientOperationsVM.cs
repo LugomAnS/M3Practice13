@@ -1,6 +1,9 @@
 ﻿using M3Practice13.Controler;
 using M3Practice13.Models;
 using M3Practice13.ViewModels.Base;
+using M3Practice13.Views;
+using System;
+using System.Windows.Controls;
 using System.Windows.Input;
 
 
@@ -16,13 +19,31 @@ namespace M3Practice13.ViewModels
             set => Set(ref worker, value);
         }
 
+        #region Работа с переводами
+        private UserControl? balanceWork;
+
+        public UserControl? BalanceWork
+        {
+            get => balanceWork;
+            set => Set(ref balanceWork, value);
+        }
+        #endregion
+
         #region Выбранный счет
         private Account selectedAccount;
 
         public Account SelectedAccount
         {
             get => selectedAccount;
-            set => Set(ref selectedAccount, value);
+            set
+            {
+                Set(ref selectedAccount, value);
+                Service.AccountChanged(selectedAccount);
+                if (value == null)
+                {
+                    Service.ChangeBalanceWorkingMode(null);
+                }
+            }
         }
 
         #endregion
@@ -31,9 +52,18 @@ namespace M3Practice13.ViewModels
         {
             Worker = worker;
 
+            Service.ChangeBalanceWork += BalanceWorkSet;
+
             OpenAccountCommand = new Command(OnOpenAccountCommandExecute);
             CloseAccountCommand = new Command(OnCloseAccountCommandExecute,
                                               CanCloseAccountCommandExecute);
+            AccountReplenishCommand = new Command(OnAccountReplenishCommandExecute,
+                                                  CanAccountReplenishCommandExecute);
+        }
+
+        private void BalanceWorkSet(UserControl? userControl)
+        {
+            BalanceWork = userControl;
         }
 
         #region Команды
@@ -43,8 +73,7 @@ namespace M3Practice13.ViewModels
 
         private void OnOpenAccountCommandExecute(object p)
         {
-            Service.OpenNewAccount(Worker.SelectedClientInfo.Client.Id,
-                                   (Worker.GetType()).Name);
+            Service.OpenNewAccount(Worker.SelectedClientInfo.Client.Id);
         }
         #endregion
 
@@ -53,8 +82,7 @@ namespace M3Practice13.ViewModels
 
         private void OnCloseAccountCommandExecute(object p)
         {
-            Service.ClosingAccount(p as Account,
-                                   (Worker.GetType().Name));
+            Service.ClosingAccount(p as Account);
         }
 
         private bool CanCloseAccountCommandExecute(object p)
@@ -67,6 +95,17 @@ namespace M3Practice13.ViewModels
             return false;
         }
 
+        #endregion
+
+        #region Пополнение счета
+        public ICommand AccountReplenishCommand { get; }
+
+        private void OnAccountReplenishCommandExecute(object p)
+        {
+            Service.ChangeBalanceWorkingMode("Fill", SelectedAccount);
+        }
+
+        private bool CanAccountReplenishCommandExecute(object p) => p != null;
         #endregion
 
         #endregion

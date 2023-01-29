@@ -22,7 +22,9 @@
                         <Button Content="Закрыть счет"
                                 Command="{Binding CloseAccountCommand}"
                                 CommandParameter="{Binding SelectedAccount}"/>
-                        <Button Content="Button3"/>
+                        <Button Content="Пополнить счет"
+                                Command="{Binding AccountReplenishCommand}"
+                                CommandParameter="{Binding SelectedAccount}"/>
                         <Button Content="Button4"/>
                     </StackPanel>
                     <StackPanel DockPanel.Dock="Left" Orientation="Vertical" Margin="3">
@@ -83,5 +85,7 @@
                 </Grid>
             </DockPanel>
         </GroupBox>
+
+        <UserControl Grid.Row="1" Content="{Binding BalanceWork}"/>
     </Grid>
 </UserControl>
