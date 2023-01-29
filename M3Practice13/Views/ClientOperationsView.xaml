@@ -14,44 +14,55 @@
             <RowDefinition />
         </Grid.RowDefinitions>
         <GroupBox Grid.Row="0" Header="Информация о клиенте">
-            <DockPanel >
-                <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal">
-                    <Button Content="Button1"/>
-                    <Button Content="Button2"/>
-                    <Button Content="Button3"/>
-                    <Button Content="Button4"/>
-                </StackPanel>
-                <StackPanel DockPanel.Dock="Left" Orientation="Vertical" Margin="3">
-                    <TextBlock Text="Фамилия: "/>
-                    <TextBlock Text="Имя: "/>
-                    <TextBlock Text="Отчество: "/>
-                    <TextBlock Text="Паспорт: "/>
-                </StackPanel>
-                <StackPanel DockPanel.Dock="Left" Margin="3">
-                    <TextBlock Text="{Binding Worker.ClientSurname}"/>
-                    <TextBlock Text="{Binding Worker.ClientName}"/>
-                    <TextBlock Text="{Binding Worker.ClientPatronymic}"/>
-                    <TextBlock Text="{Binding Worker.ClientPassport}"/>
-                </StackPanel>
-                <GroupBox Header="Счета клиента">
-                    <ListBox DockPanel.Dock="Left" ItemsSource="{Binding Worker.SelectedClientInfo.ClientAccounts}" Margin="3">
-                        <ListBox.ItemTemplate>
-                            <DataTemplate>
-                                <StackPanel Orientation="Vertical">
-                                    <TextBlock Text="{Binding Number}" FontSize="14"/>
-                                    <StackPanel Orientation="Horizontal">
-                                        <TextBlock Text="Баланс: "/>
-                                        <TextBlock Text="{Binding Balance}" Margin="0,0,5,0"/>
-                                        <TextBlock Text="Открыт: " />
-                                        <TextBlock Text="{Binding CreationDate}" Margin="0,0,5,0"/>
-                                        <TextBlock Text="Закрыт: " />
-                                        <TextBlock Text="{Binding ClosingTime}" />
+            <DockPanel>
+                <DockPanel DockPanel.Dock="Left">
+                    <StackPanel DockPanel.Dock="Bottom"  Orientation="Vertical">
+                        <Button Content="Открыть счет"/>
+                        <Button Content="Закрыть счет"/>
+                        <Button Content="Button3"/>
+                        <Button Content="Button4"/>
+                    </StackPanel>
+                    <StackPanel DockPanel.Dock="Left" Orientation="Vertical" Margin="3">
+                        <TextBlock Text="Фамилия: "/>
+                        <TextBlock Text="Имя: "/>
+                        <TextBlock Text="Отчество: "/>
+                        <TextBlock Text="Паспорт: "/>
+                    </StackPanel>
+                    <StackPanel DockPanel.Dock="Left" Margin="3">
+                        <TextBlock Text="{Binding Worker.ClientSurname}"/>
+                        <TextBlock Text="{Binding Worker.ClientName}"/>
+                        <TextBlock Text="{Binding Worker.ClientPatronymic}"/>
+                        <TextBlock Text="{Binding Worker.ClientPassport}"/>
+                    </StackPanel>
+                </DockPanel>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="0.5*"/>
+                        <ColumnDefinition Width="0.5*"/>
+                    </Grid.ColumnDefinitions>
+                    <GroupBox Header="Счета клиента" Grid.Column="0">
+                        <ListBox DockPanel.Dock="Left" ItemsSource="{Binding Worker.SelectedClientInfo.ClientAccounts}" Margin="3">
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Vertical">
+                                        <TextBlock Text="{Binding Number}" FontSize="14"/>
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Text="Баланс: "/>
+                                            <TextBlock Text="{Binding Balance}" Margin="0,0,5,0"/>
+                                            <TextBlock Text="Открыт: " />
+                                            <TextBlock Text="{Binding CreationDate}" Margin="0,0,5,0"/>
+                                            <TextBlock Text="Закрыт: " />
+                                            <TextBlock Text="{Binding ClosingTime}" />
+                                        </StackPanel>
                                     </StackPanel>
-                                </StackPanel>
-                            </DataTemplate>
-                        </ListBox.ItemTemplate>
-                    </ListBox>
-                </GroupBox>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox>
+                    </GroupBox>
+                    <GroupBox Grid.Column="1" Header="Журнал сообщений">
+                        <ListBox ></ListBox>
+                    </GroupBox>
+                </Grid>
             </DockPanel>
         </GroupBox>
     </Grid>
