@@ -25,7 +25,9 @@
                         <Button Content="Пополнить счет"
                                 Command="{Binding AccountReplenishCommand}"
                                 CommandParameter="{Binding SelectedAccount}"/>
-                        <Button Content="Button4"/>
+                        <Button Content="Перевести другому клиенту"
+                                Command="{Binding TansactionAnotherClientCommand}"
+                                CommandParameter="{Binding SelectedAccount}"/>
                     </StackPanel>
                     <StackPanel DockPanel.Dock="Left" Orientation="Vertical" Margin="3">
                         <TextBlock Text="Фамилия: "/>

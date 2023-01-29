@@ -37,12 +37,13 @@ namespace M3Practice13.ViewModels
             get => selectedAccount;
             set
             {
-                Set(ref selectedAccount, value);
-                Service.AccountChanged(selectedAccount);
                 if (value == null)
                 {
                     Service.ChangeBalanceWorkingMode(null);
                 }
+                Set(ref selectedAccount, value);
+                Service.AccountChanged(selectedAccount);
+                
             }
         }
 
@@ -59,6 +60,8 @@ namespace M3Practice13.ViewModels
                                               CanCloseAccountCommandExecute);
             AccountReplenishCommand = new Command(OnAccountReplenishCommandExecute,
                                                   CanAccountReplenishCommandExecute);
+            TansactionAnotherClientCommand = new Command(OnTansactionAnotherClientCommandExecute,
+                                                         CanTansactionAnotherClientCommandExecute);
         }
 
         private void BalanceWorkSet(UserControl? userControl)
@@ -106,6 +109,19 @@ namespace M3Practice13.ViewModels
         }
 
         private bool CanAccountReplenishCommandExecute(object p) => p != null;
+        #endregion
+
+        #region Перевод другому клиенту
+        public ICommand TansactionAnotherClientCommand { get; }
+
+        private void OnTansactionAnotherClientCommandExecute(object p)
+        {
+            Service.ChangeBalanceWorkingMode("Transaction", SelectedAccount);
+        }
+
+        private bool CanTansactionAnotherClientCommandExecute(object p)
+            => p != null && ((Account)p).ClosingTime == null;
+
         #endregion
 
         #endregion

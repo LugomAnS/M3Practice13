@@ -61,6 +61,8 @@ namespace M3Practice13.ViewModels
             Service.CloseAccount += MessageRecieve;
             Service.AccountFill += MessageRecieve;
             Service.StatusRequest += WorkerStatus;
+            Service.AllAccounts += AllAccounts;
+            Service.TransactionBetweenAccounts += TransactionReceive;
 
             AddNewClientCommand = new Command(OnAddNewClientCommandExecute,
                                               CanAddNewClientCommandExecute);
@@ -71,6 +73,21 @@ namespace M3Practice13.ViewModels
         }
 
         public string WorkerStatus() => (Worker.GetType()).Name;
+
+        private ObservableCollection<Account> AllAccounts()
+        {
+            ObservableCollection<Account> accounts = new ObservableCollection<Account>();
+
+            foreach (var cinfo in Clients)
+            {
+                foreach (var item in cinfo.ClientAccounts)
+                {
+                    accounts.Add(item);
+                }
+            }
+
+            return accounts;
+        }
 
         /// <summary>
         /// Установка View для режима работы
@@ -101,6 +118,17 @@ namespace M3Practice13.ViewModels
         private void MessageRecieve(MessageLog messageLog)
         {
             SelectedClient.Journal.Add(messageLog);
+            Data.WriteData(Clients);
+        }
+
+        private void TransactionReceive(MessageLog messageWithdraw, MessageLog messageFill)
+        {
+            SelectedClient.Journal.Add(messageWithdraw);
+
+            var clientFill = Clients.First(ci => ci.Client.Id == messageFill.ClientID);
+
+            clientFill.Journal.Add(messageFill);
+
             Data.WriteData(Clients);
         }
 

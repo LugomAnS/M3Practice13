@@ -2,6 +2,7 @@
 using M3Practice13.Views;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
@@ -13,6 +14,7 @@ namespace M3Practice13.Controler
     public static class Service
     {
         public static event Func<string> StatusRequest;
+        public static event Func<ObservableCollection<Account>> AllAccounts;
 
         public static event Action<Account> AccountSelectionChange;
         public static event Action<Worker> ChangeRole;
@@ -22,11 +24,17 @@ namespace M3Practice13.Controler
         public static event Action<MessageLog> CloseAccount;
         public static event Action<UserControl?> ChangeBalanceWork;
         public static event Action<MessageLog> AccountFill;
+        public static event Action<MessageLog, MessageLog> TransactionBetweenAccounts;
        
 
         public static string GetWorkerSatus()
         {
             return StatusRequest?.Invoke();
+        }
+
+        public static ObservableCollection<Account> GetAllAccount()
+        {
+            return AllAccounts?.Invoke();
         }
 
         public static void NewUserRole(Worker worker) => ChangeRole?.Invoke(worker);
@@ -53,6 +61,9 @@ namespace M3Practice13.Controler
             {
                 case "Fill":
                     ChangeBalanceWork?.Invoke(new BalanceWorkingView(account));
+                    break;
+                case "Transaction":
+                    ChangeBalanceWork?.Invoke(new AccountTransactionView(account));
                     break;
                 default:
                     ChangeBalanceWork?.Invoke(null);
@@ -126,6 +137,31 @@ namespace M3Practice13.Controler
         public static void AccountChanged(Account account)
         {
             AccountSelectionChange?.Invoke(account);
+        }
+
+        public static void AccountTransaction(Account accountToWithDraw, Account accountToFill, double ammount)
+        {
+            accountToWithDraw.Balance -= ammount;
+            MessageLog messageWithdraw = new MessageLog
+            {
+                ClientID = accountToWithDraw.CLientID,
+                RecordTime = DateTime.Now,
+                IsReaded = false,
+                Operator = GetWorkerSatus(),
+                Message = $"Списание со счета {accountToWithDraw.Number} на счет {accountToFill.Number} суммы {ammount}"
+            };
+
+            accountToFill.Balance += ammount;
+            MessageLog messageToFill = new MessageLog
+            {
+                ClientID = accountToFill.CLientID,
+                RecordTime = DateTime.Now,
+                IsReaded = false,
+                Operator = GetWorkerSatus(),
+                Message = $"Поступление на счет {accountToFill.Number} со счета {accountToWithDraw.Number} суммы {ammount}"
+            };
+
+            TransactionBetweenAccounts?.Invoke(messageWithdraw, messageToFill);
         }
 
     }
