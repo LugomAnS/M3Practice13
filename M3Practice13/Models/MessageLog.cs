@@ -16,7 +16,6 @@ namespace M3Practice13.Models
 
         public MessageLog()
         {
-            IsReaded = false;
         }
 
     }

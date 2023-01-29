@@ -11,13 +11,11 @@ namespace M3Practice13.Controler
 {
     public static class Service
     {
-        /// <summary>
-        /// Возвращает значение новой рабочей роли сотрудника
-        /// </summary>
+       
         public static event Action<Worker> ChangeRole;
         public static event Action<UserControl?> ChangeWorkingMode;
         public static event Action<ClientInfo> NewClientToAdd;
-        public static event Action<ClientInfo> CurrentClient;
+        public static event Action<Account, MessageLog> OpenAccount;
        
 
         public static void NewUserRole(Worker worker) => ChangeRole?.Invoke(worker);
@@ -47,9 +45,28 @@ namespace M3Practice13.Controler
             NewClientToAdd?.Invoke(newClientInfo);
         }
 
-        public static void SelectedClientChange(ClientInfo clientInfo)
+        public static void OpenNewAccount(int clientId, string autor)
         {
-            CurrentClient?.Invoke(clientInfo);
+            Random r = new Random();
+            Account newAccount = new Account
+               {
+                   CLientID = clientId,
+                   Balance = 0.00,
+                   CreationDate = DateTime.Now,
+                   Number = (r.Next(100, 1000)).ToString(),
+               };
+
+            MessageLog messageLog = new MessageLog
+            {
+                ClientID = clientId,
+                RecordTime = DateTime.Now,
+                IsReaded = false,
+                Operator = autor,
+                Message = $"Открыт счет {newAccount.Number}"
+            };
+
+            OpenAccount?.Invoke(newAccount, messageLog);
         }
+
     }
 }

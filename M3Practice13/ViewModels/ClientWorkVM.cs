@@ -57,7 +57,7 @@ namespace M3Practice13.ViewModels
 
             Service.ChangeWorkingMode += SetWorkingMode;
             Service.NewClientToAdd += AddNewClientInfo;
-            Service.CurrentClient += SelectedClientInfo;
+            Service.OpenAccount += AddNewAccount;
 
             AddNewClientCommand = new Command(OnAddNewClientCommandExecute,
                                               CanAddNewClientCommandExecute);
@@ -86,9 +86,11 @@ namespace M3Practice13.ViewModels
             Data.WriteData(Clients);
         }
 
-        private void SelectedClientInfo(ClientInfo clientInfo)
+        private void AddNewAccount(Account account, MessageLog messageLog)
         {
-            Worker.SelectedClientInfo = clientInfo;
+            SelectedClient.ClientAccounts.Add(account);
+            SelectedClient.Journal.Add(messageLog);
+            Data.WriteData(Clients);
         }
 
         #region Команды

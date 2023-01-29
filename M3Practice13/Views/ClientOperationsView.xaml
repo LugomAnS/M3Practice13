@@ -17,7 +17,8 @@
             <DockPanel>
                 <DockPanel DockPanel.Dock="Left">
                     <StackPanel DockPanel.Dock="Bottom"  Orientation="Vertical">
-                        <Button Content="Открыть счет"/>
+                        <Button Content="Открыть счет"
+                                Command="{Binding OpenAccountCommand}"/>
                         <Button Content="Закрыть счет"/>
                         <Button Content="Button3"/>
                         <Button Content="Button4"/>
