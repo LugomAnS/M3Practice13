@@ -58,6 +58,7 @@ namespace M3Practice13.ViewModels
             Service.ChangeWorkingMode += SetWorkingMode;
             Service.NewClientToAdd += AddNewClientInfo;
             Service.OpenAccount += AddNewAccount;
+            Service.CloseAccount += CloseAccount;
 
             AddNewClientCommand = new Command(OnAddNewClientCommandExecute,
                                               CanAddNewClientCommandExecute);
@@ -89,6 +90,12 @@ namespace M3Practice13.ViewModels
         private void AddNewAccount(Account account, MessageLog messageLog)
         {
             SelectedClient.ClientAccounts.Add(account);
+            SelectedClient.Journal.Add(messageLog);
+            Data.WriteData(Clients);
+        }
+
+        private void CloseAccount(MessageLog messageLog)
+        {
             SelectedClient.Journal.Add(messageLog);
             Data.WriteData(Clients);
         }

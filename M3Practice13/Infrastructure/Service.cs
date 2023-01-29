@@ -16,6 +16,7 @@ namespace M3Practice13.Controler
         public static event Action<UserControl?> ChangeWorkingMode;
         public static event Action<ClientInfo> NewClientToAdd;
         public static event Action<Account, MessageLog> OpenAccount;
+        public static event Action<MessageLog> CloseAccount;
        
 
         public static void NewUserRole(Worker worker) => ChangeRole?.Invoke(worker);
@@ -66,6 +67,21 @@ namespace M3Practice13.Controler
             };
 
             OpenAccount?.Invoke(newAccount, messageLog);
+        }
+
+        public static void ClosingAccount(Account account, string autor)
+        {
+            account.ClosingTime = DateTime.Now;
+            MessageLog messageLog = new MessageLog
+            {
+                ClientID = account.CLientID,
+                RecordTime = DateTime.Now,
+                IsReaded = false,
+                Operator = autor,
+                Message = $"Произведено закрытие счета {account.Number}"
+            };
+
+            CloseAccount?.Invoke(messageLog);
         }
 
     }

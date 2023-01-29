@@ -19,7 +19,9 @@
                     <StackPanel DockPanel.Dock="Bottom"  Orientation="Vertical">
                         <Button Content="Открыть счет"
                                 Command="{Binding OpenAccountCommand}"/>
-                        <Button Content="Закрыть счет"/>
+                        <Button Content="Закрыть счет"
+                                Command="{Binding CloseAccountCommand}"
+                                CommandParameter="{Binding SelectedAccount}"/>
                         <Button Content="Button3"/>
                         <Button Content="Button4"/>
                     </StackPanel>
@@ -42,7 +44,8 @@
                         <ColumnDefinition Width="0.5*"/>
                     </Grid.ColumnDefinitions>
                     <GroupBox Header="Счета клиента" Grid.Column="0">
-                        <ListBox DockPanel.Dock="Left" ItemsSource="{Binding Worker.SelectedClientInfo.ClientAccounts}" Margin="3">
+                        <ListBox DockPanel.Dock="Left" ItemsSource="{Binding Worker.SelectedClientInfo.ClientAccounts}" Margin="3"
+                                 SelectedItem="{Binding SelectedAccount}">
                             <ListBox.ItemTemplate>
                                 <DataTemplate>
                                     <StackPanel Orientation="Vertical">
