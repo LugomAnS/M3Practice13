@@ -63,6 +63,7 @@ namespace M3Practice13.ViewModels
             Service.StatusRequest += WorkerStatus;
             Service.AllAccounts += AllAccounts;
             Service.TransactionBetweenAccounts += TransactionReceive;
+            Service.RequestToSaveDataBase += SaveDataBase;
 
             AddNewClientCommand = new Command(OnAddNewClientCommandExecute,
                                               CanAddNewClientCommandExecute);
@@ -71,6 +72,8 @@ namespace M3Practice13.ViewModels
             ClientInfoCommand = new Command(OnClientInfoCommandExecute,
                                             CanClientInfoCommandExecute);
         }
+
+        private void SaveDataBase() => Data.WriteData(Clients);
 
         public string WorkerStatus() => (Worker.GetType()).Name;
 
@@ -118,6 +121,7 @@ namespace M3Practice13.ViewModels
         private void MessageRecieve(MessageLog messageLog)
         {
             SelectedClient.Journal.Add(messageLog);
+            SelectedClient.NewMessagesRefresh();
             Data.WriteData(Clients);
         }
 
@@ -128,6 +132,9 @@ namespace M3Practice13.ViewModels
             var clientFill = Clients.First(ci => ci.Client.Id == messageFill.ClientID);
 
             clientFill.Journal.Add(messageFill);
+
+            SelectedClient.NewMessagesRefresh();
+            clientFill.NewMessagesRefresh();
 
             Data.WriteData(Clients);
         }

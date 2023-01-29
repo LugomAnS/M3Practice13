@@ -15,6 +15,7 @@ namespace M3Practice13.Controler
     {
         public static event Func<string> StatusRequest;
         public static event Func<ObservableCollection<Account>> AllAccounts;
+        public static event Action RequestToSaveDataBase;
 
         public static event Action<Account> AccountSelectionChange;
         public static event Action<Worker> ChangeRole;
@@ -162,6 +163,11 @@ namespace M3Practice13.Controler
             };
 
             TransactionBetweenAccounts?.Invoke(messageWithdraw, messageToFill);
+        }
+
+        public static void CallToSaveDataBase()
+        {
+            RequestToSaveDataBase?.Invoke();
         }
 
     }

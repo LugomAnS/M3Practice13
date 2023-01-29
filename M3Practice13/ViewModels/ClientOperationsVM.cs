@@ -49,6 +49,25 @@ namespace M3Practice13.ViewModels
 
         #endregion
 
+        #region Выбранное сообщение
+        private MessageLog? selectedMessage;
+
+        public MessageLog? SelectedMessage
+        {
+            get => selectedMessage;
+            set
+            {
+                if (value != null)
+                {
+                    Set(ref selectedMessage, value);
+                    selectedMessage.IsReaded = true;
+                    Worker.SelectedClientInfo.NewMessagesRefresh();
+                }
+            }
+        }
+
+        #endregion
+
         public ClientOperationsVM(Worker worker)
         {
             Worker = worker;

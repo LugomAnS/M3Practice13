@@ -10,15 +10,23 @@
              d:DesignHeight="450" d:DesignWidth="800">
     <UserControl.Resources>
         <DataTemplate x:Key="Client_short">
-            <StackPanel>
-                <StackPanel Orientation="Vertical">
-                    <TextBlock Text="{Binding Client.Surname}" FontSize="14"/>
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="{Binding Client.Name}" Margin="0,0,3,0"/>
-                        <TextBlock Text="{Binding Client.Patronymic}" Margin="3,0,0,0"/>
+            <DockPanel LastChildFill="False">
+                <StackPanel Orientation="Horizontal" DockPanel.Dock="Right" Margin="25,0,0,0">
+                    <TextBlock Text="{Binding UnreadedMessages}" HorizontalAlignment="Left"
+                               VerticalAlignment="Center" FontSize="15" Foreground="red"/>
+                </StackPanel>
+                
+                <StackPanel Orientation="Horizontal" DockPanel.Dock="Left">
+                    <StackPanel Orientation="Vertical">
+                        <TextBlock Text="{Binding Client.Surname}" FontSize="14"/>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="{Binding Client.Name}" Margin="0,0,3,0"/>
+                            <TextBlock Text="{Binding Client.Patronymic}" Margin="3,0,0,0"/>
+                        </StackPanel>
                     </StackPanel>
                 </StackPanel>
-            </StackPanel>
+                
+            </DockPanel>
         </DataTemplate>
         
         <Style TargetType="Button">

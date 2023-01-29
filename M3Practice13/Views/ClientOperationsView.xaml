@@ -68,7 +68,8 @@
                         </ListBox>
                     </GroupBox>
                     <GroupBox Grid.Column="1" Header="Журнал сообщений">
-                        <ListBox ItemsSource="{Binding Worker.SelectedClientInfo.Journal}">
+                        <ListBox ItemsSource="{Binding Worker.SelectedClientInfo.Journal}"
+                                 SelectedItem="{Binding SelectedMessage}">
                             <ListBox.ItemTemplate>
                                 <DataTemplate>
                                     <StackPanel Orientation="Vertical">

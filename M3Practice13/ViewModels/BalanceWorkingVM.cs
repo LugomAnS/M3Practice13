@@ -55,7 +55,7 @@ namespace M3Practice13.ViewModels
             Service.AccountFilling(CurrentAccount, double.Parse((string)p));
         }
         private bool CanAccountFillComandExecute(object p)
-            => double.TryParse((string)p, out double test) && test >= 0.0 && CurrentAccount.ClosingTime == null;
+            => double.TryParse((string)p, out double test) && CurrentAccount != null && test >= 0.0 && CurrentAccount.ClosingTime == null;
 
 
         #endregion
