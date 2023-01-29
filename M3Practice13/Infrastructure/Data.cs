@@ -34,7 +34,8 @@ namespace M3Practice13
                              Patronymic = $"Patronymic {client_index++}",
                              Passport = $"1111 111111"
                          },
-                         ClientAccounts = new ObservableCollection<Account>()
+                         ClientAccounts = new ObservableCollection<Account>(),
+                         Journal = new ObservableCollection<MessageLog>()
 
                      });
                 ObservableCollection<ClientInfo> clients = new ObservableCollection<ClientInfo>();
@@ -48,6 +49,15 @@ namespace M3Practice13
                         Balance = 200.0,
                         CreationDate = DateTime.Now
                     });
+                    item.Journal.Add(new MessageLog
+                    {
+                        ClientID = item.Client.Id,
+                        RecordTime = DateTime.Now,
+                        Message = $"Открыт счет {item.Client.Id}{item.Client.Id}{item.Client.Id}",
+                        Operator = $"Admin",
+                        IsReaded = true
+                    });
+
                     clients.Add(item);
                 }
 

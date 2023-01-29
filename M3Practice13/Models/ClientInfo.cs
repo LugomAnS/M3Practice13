@@ -13,6 +13,8 @@ namespace M3Practice13.Models
 
         public ObservableCollection<Account> ClientAccounts { get; set; } = new ObservableCollection<Account>();
 
+        public ObservableCollection<MessageLog> Journal { get; set; } = new ObservableCollection<MessageLog>();
+
         public ClientInfo() 
         {
         }
