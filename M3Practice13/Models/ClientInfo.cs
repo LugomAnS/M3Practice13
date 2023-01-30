@@ -62,7 +62,7 @@ namespace M3Practice13.Models
             {
                 UnreadedMessages = null;
             }
-            Service.CallToSaveDataBase();
+            Service.SaveDataBaseRequest();
         }
     }
 }

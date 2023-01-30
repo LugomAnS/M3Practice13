@@ -73,7 +73,7 @@ namespace M3Practice13.ViewModels
         {
             ObservableCollection<Account> allaccount = new ObservableCollection<Account>();
 
-            foreach (var item in Service.GetAllAccount())
+            foreach (var item in Service.GetAllAccountRequest())
             {
                 if (item.ClosingTime == null && item.CLientID != CurrentAccount.CLientID)
                 {
@@ -90,7 +90,7 @@ namespace M3Practice13.ViewModels
 
         private void OnTransactionCommandExecute(object p)
         {
-            Service.AccountTransaction(CurrentAccount, AccountTransaction, double.Parse(AmmountTransaction));
+            Service.TransactionBetweenAccountsRequest(CurrentAccount, AccountTransaction, double.Parse(AmmountTransaction));
         }
         private bool CanTransactionCommandExecute(object p)
         {
@@ -110,7 +110,7 @@ namespace M3Practice13.ViewModels
         public ICommand CancelCommand { get; }
 
         private void OnCancelCommandExecute(object p)
-            => Service.ChangeBalanceWorkingMode(null);
+            => Service.ClientWorkWindowChangeRequest(null);
         #endregion
 
         #endregion

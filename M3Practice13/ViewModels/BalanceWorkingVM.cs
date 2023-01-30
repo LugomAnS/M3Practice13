@@ -52,7 +52,7 @@ namespace M3Practice13.ViewModels
 
         private void OnAccountFillComandExecute(object p)
         {
-            Service.AccountFilling(CurrentAccount, double.Parse((string)p));
+            Service.AccountFillRequest(CurrentAccount, double.Parse((string)p));
         }
         private bool CanAccountFillComandExecute(object p)
             => double.TryParse((string)p, out double test) && CurrentAccount != null && test >= 0.0 && CurrentAccount.ClosingTime == null;
@@ -65,7 +65,7 @@ namespace M3Practice13.ViewModels
 
         private void OnCancelCommandExecute(object p)
         {
-            Service.ChangeBalanceWorkingMode(null);
+            Service.ClientWorkWindowChangeRequest(null);
         }
         #endregion
 

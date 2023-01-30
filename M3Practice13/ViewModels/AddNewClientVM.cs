@@ -30,7 +30,7 @@ namespace M3Practice13.ViewModels
 
         private void OnCancelCommandExecute(object p)
         {
-            Service.ChangeWorkMode(null);
+            Service.MainWindowChangeRequest(null);
         }
         #endregion
 
@@ -39,8 +39,8 @@ namespace M3Practice13.ViewModels
 
         private void OnSaveNewClientCommandExecute(object p)
         {
-            Service.AddNewClient(NewClient);
-            Service.ChangeWorkMode(null);
+            Service.AddNewClientRequest(NewClient);
+            Service.MainWindowChangeRequest(null);
         }
 
         private bool CanSaveNewClientCommandExecute(object p)

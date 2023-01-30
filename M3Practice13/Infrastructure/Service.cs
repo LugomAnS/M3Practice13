@@ -13,84 +13,115 @@ namespace M3Practice13.Controler
 {
     public static class Service
     {
-        public static event Func<string> StatusRequest;
-        public static event Func<ObservableCollection<Account>> AllAccounts;
-        public static event Action RequestToSaveDataBase;
+        /// <summary>
+        /// Смена режима работы главного окна
+        /// </summary>
+        public static event Action<UserControl?> MainWindowChange;
+        public static void MainWindowChangeRequest(string request = null, Worker worker = null)
+        {
+            switch (request)
+            {
+                case "AddClient":
+                    MainWindowChange?.Invoke(new AddNewClientView());
+                    break;
+                case "ClientInfo":
+                    MainWindowChange?.Invoke(new ClientOperationsView(worker));
+                    break;
+                default:
+                    MainWindowChange?.Invoke(null);
+                    break;
+            }
+        }
 
-        public static event Action<Account> AccountSelectionChange;
+        /// <summary>
+        /// Смена вторичного окна работы с клиентом
+        /// </summary>
+        public static event Action<UserControl?> ClientWorkWindowChange;
+        public static void ClientWorkWindowChangeRequest(string request = null, Account account = null)
+        {
+            switch (request)
+            {
+                case "Fill":
+                    ClientWorkWindowChange?.Invoke(new BalanceWorkingView(account));
+                    break;
+                case "Transaction":
+                    ClientWorkWindowChange?.Invoke(new AccountTransactionView(account));
+                    break;
+                default:
+                    ClientWorkWindowChange?.Invoke(null);
+                    break;
+            }
+        }
+
+        /// <summary>
+        /// Смена режима работы
+        /// </summary>
         public static event Action<Worker> ChangeRole;
-        public static event Action<UserControl?> ChangeWorkingMode;
-        public static event Action<ClientInfo> NewClientToAdd;
-        public static event Action<Account, MessageLog> OpenAccount;
-        public static event Action<MessageLog> CloseAccount;
-        public static event Action<UserControl?> ChangeBalanceWork;
-        public static event Action<MessageLog> AccountFill;
-        public static event Action<MessageLog, MessageLog> TransactionBetweenAccounts;
-       
+        public static void ChangeRoleRequest(Worker worker) => ChangeRole?.Invoke(worker);
 
+        /// <summary>
+        /// Режим работы с системой
+        /// </summary>
+        public static event Func<string> StatusRequest;
         public static string GetWorkerSatus()
         {
             return StatusRequest?.Invoke();
         }
 
-        public static ObservableCollection<Account> GetAllAccount()
+        /// <summary>
+        /// Все счета в БД
+        /// </summary>
+        public static event Func<ObservableCollection<Account>> AllAccounts;
+        public static ObservableCollection<Account> GetAllAccountRequest()
         {
             return AllAccounts?.Invoke();
         }
 
-        public static void NewUserRole(Worker worker) => ChangeRole?.Invoke(worker);
-
-        public static void ChangeWorkMode(string request=null, Worker worker=null)
+        /// <summary>
+        /// Сохранение информации в БД
+        /// </summary>
+        public static event Action SaveDataBase;
+        public static void SaveDataBaseRequest()
         {
-            switch (request)
-            {
-                case "AddClient":
-                    ChangeWorkingMode?.Invoke(new AddNewClientView());
-                    break;
-                case "ClientInfo":
-                    ChangeWorkingMode?.Invoke(new ClientOperationsView(worker));
-                    break;
-                default:
-                    ChangeWorkingMode?.Invoke(null);
-                    break;
-            }
+            SaveDataBase?.Invoke();
         }
 
-        public static void ChangeBalanceWorkingMode(string request=null, Account account=null)
+        /// <summary>
+        /// Счет текущего клиента
+        /// </summary>
+        public static event Action<Account> AccountSelectionChange;
+        public static void AccountChanged(Account account)
         {
-            switch (request)
-            {
-                case "Fill":
-                    ChangeBalanceWork?.Invoke(new BalanceWorkingView(account));
-                    break;
-                case "Transaction":
-                    ChangeBalanceWork?.Invoke(new AccountTransactionView(account));
-                    break;
-                default:
-                    ChangeBalanceWork?.Invoke(null);
-                    break;
-            }
+            AccountSelectionChange?.Invoke(account);
         }
 
-        public static void AddNewClient(Client client)
+        /// <summary>
+        /// Добавление нового клиента
+        /// </summary>
+        public static event Action<ClientInfo> AddNewClient;
+        public static void AddNewClientRequest(Client client)
         {
             client.Id = Data.GetNextID();
-            
+
             ClientInfo newClientInfo = new ClientInfo();
             newClientInfo.Client = client;
-            NewClientToAdd?.Invoke(newClientInfo);
+            AddNewClient?.Invoke(newClientInfo);
         }
 
-        public static void OpenNewAccount(int clientId)
+        /// <summary>
+        /// Открыть новый счет
+        /// </summary>
+        public static event Action<Account, MessageLog> OpenAccount;
+        public static void OpenAccountRequest(int clientId)
         {
             Random r = new Random();
             Account newAccount = new Account
-               {
-                   CLientID = clientId,
-                   Balance = 0.00,
-                   CreationDate = DateTime.Now,
-                   Number = (r.Next(100, 1000)).ToString(),
-               };
+            {
+                CLientID = clientId,
+                Balance = 0.00,
+                CreationDate = DateTime.Now,
+                Number = (r.Next(100, 1000)).ToString(),
+            };
 
             MessageLog messageLog = new MessageLog
             {
@@ -104,7 +135,11 @@ namespace M3Practice13.Controler
             OpenAccount?.Invoke(newAccount, messageLog);
         }
 
-        public static void ClosingAccount(Account account)
+        /// <summary>
+        /// Закрыть счет
+        /// </summary>
+        public static event Action<MessageLog> CloseAccount;
+        public static void CloseAccountRequest(Account account)
         {
             account.ClosingTime = DateTime.Now;
             MessageLog messageLog = new MessageLog
@@ -119,7 +154,11 @@ namespace M3Practice13.Controler
             CloseAccount?.Invoke(messageLog);
         }
 
-        public static void AccountFilling(Account account, double ammount)
+        /// <summary>
+        /// Пополнение счета
+        /// </summary>
+        public static event Action<MessageLog> AccountFill;
+        public static void AccountFillRequest(Account account, double ammount)
         {
             account.Balance += ammount;
 
@@ -135,12 +174,11 @@ namespace M3Practice13.Controler
             AccountFill?.Invoke(messageLog);
         }
 
-        public static void AccountChanged(Account account)
-        {
-            AccountSelectionChange?.Invoke(account);
-        }
-
-        public static void AccountTransaction(Account accountToWithDraw, Account accountToFill, double ammount)
+        /// <summary>
+        /// Перевод между счетами
+        /// </summary>
+        public static event Action<MessageLog, MessageLog> TransactionBetweenAccounts;
+        public static void TransactionBetweenAccountsRequest(Account accountToWithDraw, Account accountToFill, double ammount)
         {
             accountToWithDraw.Balance -= ammount;
             MessageLog messageWithdraw = new MessageLog
@@ -164,11 +202,6 @@ namespace M3Practice13.Controler
 
             TransactionBetweenAccounts?.Invoke(messageWithdraw, messageToFill);
         }
-
-        public static void CallToSaveDataBase()
-        {
-            RequestToSaveDataBase?.Invoke();
-        }
-
+        
     }
 }

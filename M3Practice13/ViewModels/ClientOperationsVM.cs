@@ -39,7 +39,7 @@ namespace M3Practice13.ViewModels
             {
                 if (value == null)
                 {
-                    Service.ChangeBalanceWorkingMode(null);
+                    Service.ClientWorkWindowChangeRequest(null);
                 }
                 Set(ref selectedAccount, value);
                 Service.AccountChanged(selectedAccount);
@@ -72,7 +72,7 @@ namespace M3Practice13.ViewModels
         {
             Worker = worker;
 
-            Service.ChangeBalanceWork += BalanceWorkSet;
+            Service.ClientWorkWindowChange += BalanceWorkSet;
 
             OpenAccountCommand = new Command(OnOpenAccountCommandExecute);
             CloseAccountCommand = new Command(OnCloseAccountCommandExecute,
@@ -95,7 +95,7 @@ namespace M3Practice13.ViewModels
 
         private void OnOpenAccountCommandExecute(object p)
         {
-            Service.OpenNewAccount(Worker.SelectedClientInfo.Client.Id);
+            Service.OpenAccountRequest(Worker.SelectedClientInfo.Client.Id);
         }
         #endregion
 
@@ -104,7 +104,7 @@ namespace M3Practice13.ViewModels
 
         private void OnCloseAccountCommandExecute(object p)
         {
-            Service.ClosingAccount(p as Account);
+            Service.CloseAccountRequest(p as Account);
         }
 
         private bool CanCloseAccountCommandExecute(object p)
@@ -124,7 +124,7 @@ namespace M3Practice13.ViewModels
 
         private void OnAccountReplenishCommandExecute(object p)
         {
-            Service.ChangeBalanceWorkingMode("Fill", SelectedAccount);
+            Service.ClientWorkWindowChangeRequest("Fill", SelectedAccount);
         }
 
         private bool CanAccountReplenishCommandExecute(object p) => p != null;
@@ -135,7 +135,7 @@ namespace M3Practice13.ViewModels
 
         private void OnTansactionAnotherClientCommandExecute(object p)
         {
-            Service.ChangeBalanceWorkingMode("Transaction", SelectedAccount);
+            Service.ClientWorkWindowChangeRequest("Transaction", SelectedAccount);
         }
 
         private bool CanTansactionAnotherClientCommandExecute(object p)

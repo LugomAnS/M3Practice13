@@ -23,14 +23,14 @@ namespace M3Practice13.ViewModels
 
         private void OnConsultantExecute(object p)
         {
-            Service.NewUserRole(new Consultant());
+            Service.ChangeRoleRequest(new Consultant());
         }
 
         public ICommand ManagerCommand { get; }
 
         private void OnManagerCommandExecute(object obj)
         {
-            Service.NewUserRole(new Manager());
+            Service.ChangeRoleRequest(new Manager());
         }
 
         #endregion

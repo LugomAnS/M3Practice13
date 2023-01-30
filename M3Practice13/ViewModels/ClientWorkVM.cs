@@ -58,15 +58,15 @@ namespace M3Practice13.ViewModels
             Worker = roleType;
             Clients = Data.GetData();
 
-            Service.ChangeWorkingMode += SetWorkingMode;
-            Service.NewClientToAdd += AddNewClientInfo;
+            Service.MainWindowChange += SetWorkingMode;
+            Service.AddNewClient += AddNewClientInfo;
             Service.OpenAccount += AddNewAccount;
             Service.CloseAccount += MessageRecieve;
             Service.AccountFill += MessageRecieve;
             Service.StatusRequest += WorkerStatus;
             Service.AllAccounts += AllAccounts;
             Service.TransactionBetweenAccounts += TransactionReceive;
-            Service.RequestToSaveDataBase += SaveDataBase;
+            Service.SaveDataBase += SaveDataBase;
 
             AddNewClientCommand = new Command(OnAddNewClientCommandExecute,
                                               CanAddNewClientCommandExecute);
@@ -118,6 +118,7 @@ namespace M3Practice13.ViewModels
         {
             SelectedClient.ClientAccounts.Add(account);
             SelectedClient.Journal.Add(messageLog);
+            SelectedClient.NewMessagesRefresh();
             Data.WriteData(Clients);
         }
 
@@ -149,7 +150,7 @@ namespace M3Practice13.ViewModels
 
         private void OnAddNewClientCommandExecute(object p)
         {
-            Service.ChangeWorkMode("AddClient");
+            Service.MainWindowChangeRequest("AddClient");
         }
 
         private bool CanAddNewClientCommandExecute(object p)
@@ -161,7 +162,7 @@ namespace M3Practice13.ViewModels
 
         private void OnDeleteClientCommandExecute(object p)
         {
-            Service.ChangeWorkMode(null);
+            Service.MainWindowChangeRequest(null);
             Clients.Remove(Worker.SelectedClientInfo);
             Data.WriteData(Clients);
         }
@@ -180,7 +181,7 @@ namespace M3Practice13.ViewModels
 
         private void OnClientInfoCommandExecute(object p)
         {
-            Service.ChangeWorkMode("ClientInfo", Worker);
+            Service.MainWindowChangeRequest("ClientInfo", Worker);
         }
 
         private bool CanClientInfoCommandExecute(object p) => p != null;
