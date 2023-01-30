@@ -1,0 +1,63 @@
+﻿<UserControl x:Class="M3Practice13.Views.ClientWorkView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:M3Practice13.Views"
+             xmlns:vm="clr-namespace:M3Practice13.ViewModels"
+             mc:Ignorable="d"
+             d:DataContext="{d:DesignInstance vm:ClientWorkVM}"
+             d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+        <DataTemplate x:Key="Client_short">
+            <DockPanel LastChildFill="False">
+                <StackPanel Orientation="Horizontal" DockPanel.Dock="Right" Margin="25,0,0,0">
+                    <TextBlock Text="{Binding UnreadedMessages}" HorizontalAlignment="Left"
+                               VerticalAlignment="Center" FontSize="15" Foreground="red"/>
+                </StackPanel>
+                
+                <StackPanel Orientation="Horizontal" DockPanel.Dock="Left">
+                    <StackPanel Orientation="Vertical">
+                        <TextBlock Text="{Binding Client.Surname}" FontSize="14"/>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="{Binding Client.Name}" Margin="0,0,3,0"/>
+                            <TextBlock Text="{Binding Client.Patronymic}" Margin="3,0,0,0"/>
+                        </StackPanel>
+                    </StackPanel>
+                </StackPanel>
+                
+            </DockPanel>
+        </DataTemplate>
+        
+        <Style TargetType="Button">
+            <Setter Property="Margin" Value="5" />
+            <Setter Property="Padding" Value="3" />
+        </Style>
+    </UserControl.Resources>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="0.3*"/>
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+        <GroupBox Grid.Column="0" Header="Список клиентов">
+            <DockPanel>
+                <StackPanel Orientation="Vertical" DockPanel.Dock="Bottom">
+                    <Button Content="Работа с клиентом"
+                            Command="{Binding ClientInfoCommand}"
+                            CommandParameter="{Binding SelectedClient}"/>
+                    <Button Content="Добавить клиента"
+                            Command="{Binding AddNewClientCommand}"/>
+                    <Button Content="Удалить клиента"
+                            Command="{Binding DeleteClientCommand}"
+                            CommandParameter="{Binding SelectedClient}"/>
+                </StackPanel>
+                <ListBox ItemsSource="{Binding Clients}" ScrollViewer.VerticalScrollBarVisibility="auto" 
+                         ScrollViewer.CanContentScroll="True" ItemTemplate="{StaticResource Client_short}"
+                         SelectedItem="{Binding SelectedClient}"></ListBox>
+            </DockPanel>
+        </GroupBox>
+
+        <UserControl Grid.Column="1" Content="{Binding WorkingMode}" />
+
+    </Grid>
+</UserControl>
