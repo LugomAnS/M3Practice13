@@ -1,4 +1,5 @@
-﻿using M3Practice13.Controler;
+﻿using DataFormat;
+using M3Practice13.Controler;
 using M3Practice13.Models;
 using M3Practice13.ViewModels.Base;
 using System;
@@ -6,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
 
 namespace M3Practice13.ViewModels
@@ -39,22 +41,42 @@ namespace M3Practice13.ViewModels
 
         private void OnSaveNewClientCommandExecute(object p)
         {
-            Service.AddNewClientRequest(NewClient);
-            Service.MainWindowChangeRequest(null);
-        }
-
-        private bool CanSaveNewClientCommandExecute(object p)
-        {
-            if (NewClient.Name != null
-                && NewClient.Surname != null
-                && NewClient.Patronymic != null
-                && NewClient.Passport != null)
+            try
             {
-                return true;
-            }
+                if (String.IsNullOrWhiteSpace(NewClient.Surname)) throw new ClientFormatException("Фамилия не может быть пустой");
+                if (String.IsNullOrWhiteSpace(NewClient.Name)) throw new ClientFormatException("Необходимо заполнить имя");
+                if (String.IsNullOrWhiteSpace(NewClient.Patronymic)) throw new ClientFormatException("Заполните отчество");
 
-            return false;
+                if (String.IsNullOrWhiteSpace(NewClient.Passport)) 
+                    throw new ClientFormatException("Реквизиты паспорта обязательны для заполнения");
+                if (!NewClient.Passport.All(c => Char.IsDigit(c)))
+                    throw new ClientFormatException("Паспорт может содержать только цифры"); 
+
+                Service.AddNewClientRequest(NewClient);
+                Service.MainWindowChangeRequest(null);
+            }
+            catch (ClientFormatException e)
+            {
+                MessageBox.Show(e.Message,
+                                "Ошибка",
+                                MessageBoxButton.OK,
+                                MessageBoxImage.Error);
+            }
+   
         }
+
+        private bool CanSaveNewClientCommandExecute(object p) => true;
+        //{
+        //    if (NewClient.Name != null
+        //        && NewClient.Surname != null
+        //        && NewClient.Patronymic != null
+        //        && NewClient.Passport != null)
+        //    {
+        //        return true;
+        //    }
+
+        //    return false;
+        //}
 
         #endregion
 
