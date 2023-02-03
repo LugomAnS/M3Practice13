@@ -6,6 +6,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 
 namespace M3Practice13.ViewModels
@@ -19,6 +21,8 @@ namespace M3Practice13.ViewModels
         }
 
         #region Команды
+
+        #region Выбор роли, реализация 2-х кнопок
         public ICommand ConsultantCommand { get; }
 
         private void OnConsultantExecute(object p)
@@ -32,6 +36,7 @@ namespace M3Practice13.ViewModels
         {
             Service.ChangeRoleRequest(new Manager());
         }
+        #endregion
 
         #endregion
     }
