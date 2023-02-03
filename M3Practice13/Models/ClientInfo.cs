@@ -64,5 +64,17 @@ namespace M3Practice13.Models
             }
             Service.SaveDataBaseRequest();
         }
+
+        /// <summary>
+        /// Перегрузка оператора сложения
+        /// </summary>
+        /// <param name="clientInfo">Инфрмормация о клиенте</param>
+        /// <param name="messageToAdd">Сообщение которое необходимо добавить</param>
+        /// <returns></returns>
+        public static ClientInfo operator +(ClientInfo clientInfo, MessageLog messageToAdd)
+        {
+            clientInfo.journal.Add(messageToAdd);
+            return clientInfo;
+        }
     }
 }
