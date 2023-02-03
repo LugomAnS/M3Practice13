@@ -117,25 +117,34 @@ namespace M3Practice13.ViewModels
         private void AddNewAccount(Account account, MessageLog messageLog)
         {
             SelectedClient.ClientAccounts.Add(account);
-            SelectedClient.Journal.Add(messageLog);
+
+            // используем перегруженный оператор
+            SelectedClient += messageLog;
+            // SelectedClient.Journal.Add(messageLog);
             SelectedClient.NewMessagesRefresh();
             Data.WriteData(Clients);
         }
 
         private void MessageRecieve(MessageLog messageLog)
         {
-            SelectedClient.Journal.Add(messageLog);
+            // используем перегруженный оператор
+            SelectedClient += messageLog;
+            //SelectedClient.Journal.Add(messageLog);
             SelectedClient.NewMessagesRefresh();
             Data.WriteData(Clients);
         }
 
         private void TransactionReceive(MessageLog messageWithdraw, MessageLog messageFill)
         {
-            SelectedClient.Journal.Add(messageWithdraw);
+            // используем перегруженный оператор
+            SelectedClient += messageWithdraw;
+            //SelectedClient.Journal.Add(messageWithdraw);
 
             var clientFill = Clients.First(ci => ci.Client.Id == messageFill.ClientID);
 
-            clientFill.Journal.Add(messageFill);
+            // используем перегруженный оператор
+            clientFill += messageFill;
+            //clientFill.Journal.Add(messageFill);
 
             SelectedClient.NewMessagesRefresh();
             clientFill.NewMessagesRefresh();
