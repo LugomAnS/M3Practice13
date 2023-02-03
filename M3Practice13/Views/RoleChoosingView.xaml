@@ -19,13 +19,14 @@
     </UserControl.Resources>
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition  Height="0.5*"/>
-            <RowDefinition Height="0.5*"/>
+            <RowDefinition />
         </Grid.RowDefinitions>
-        <Button Grid.Row="0" Content="Консультант"
-                Command="{Binding ConsultantCommand}"/>
-        <Button Grid.Row="1" Content="Менеджер"
-                Command="{Binding ManagerCommand}"/>
-
+        <StackPanel Grid.Row="0" Orientation="Vertical">
+            <RadioButton GroupName="Role" Content="Консультант" 
+                         Command="{Binding ConsultantCommand}"/>
+            <RadioButton GroupName="Role" Content="Менеджер"
+                         Command="{Binding ManagerCommand}"/>
+        </StackPanel>
+       
     </Grid>
 </UserControl>
